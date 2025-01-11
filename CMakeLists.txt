@@ -198,7 +198,7 @@ macro(init_submodule name)
 endmacro()
 
 # ----- Subprojects --------------------------------------------------------- #
-# The core library is required by all other SMS++ modules, if any
+# The core library is required by all other  modules, if any
 # Requires Boost (headers only), netCDF-C++ and Eigen3.
 set(SMSPP_REQUIRED OFF)
 
@@ -303,10 +303,10 @@ if (BUILD_tests)
 	enable_testing()
 endif ()
 
-# ----- SMS++ --------------------------------------------------------------- #
+# -----  --------------------------------------------------------------- #
 if (SMSPP_REQUIRED)
-	init_submodule(SMS++)
-	add_subdirectory(SMS++)
+	init_submodule(SMSplusplus)
+	add_subdirectory(SMSplusplus)
 endif ()
 
 # --------------------------------------------------------------------------- #
