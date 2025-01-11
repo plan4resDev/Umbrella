@@ -58,3 +58,8 @@
 	path = SDDPBlock
 	url = https://github.com/plan4resDev/SDDPBlock
 	branch = master
+
+[submodule "SMS++"]
+	path = SMSplusplus
+	url = https://github.com/plan4resDev/SMSplusplus
+	branch = master
