@@ -63,3 +63,8 @@
 	path = SMSplusplus
 	url = https://github.com/plan4resDev/SMSplusplus
 	branch = master
+
+[submodule "StochasticBlock"]
+	path = StochasticBlock
+	url = https://github.com/plan4resDev/StochasticBlock
+	branch = master
