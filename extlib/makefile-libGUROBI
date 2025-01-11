@@ -1,0 +1,69 @@
+##############################################################################
+############################# makefile-libGUROBI #############################
+##############################################################################
+#                                                                            #
+#   makefile of libGUROBI                                                    #
+#                                                                            #
+#   Input:  $(GUROBI_ROOT), the directory where Gurobi is installed          #
+#                                                                            #
+#   Output: accordingly, there is no *H and *OBJ in output, since there is   #
+#           no need to check for changes in the .h and rebuild the .o / .a   #
+#                                                                            #
+#           $(libGUROBILIB) = external libraries + -L< libdirs > for         #
+#                             libGUROBI                                      #
+#           $(libGUROBIINC) = the -I$(include directories) for libGUROBI     #
+#                                                                            #
+#                              Antonio Frangioni                             #
+#                         Dipartimento di Informatica                        #
+#                             Universita' di Pisa                            #
+#                                                                            #
+##############################################################################
+
+# internal macros - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# external libraries that Gurobi needs
+ifeq ($(UNAME_S),Linux)
+    libGUROBIEXTLIB = -lpthread
+endif
+ifeq ($(UNAME_S),Darwin)
+    libGUROBIEXTLIB =
+endif
+
+# basic Gurobi directory
+ifeq ($(UNAME_S),Linux)
+    libGUROBIBSCDIR = $(GUROBI_ROOT)/linux64
+endif
+ifeq ($(UNAME_S),Darwin)
+    libGUROBIBSCDIR = $(GUROBI_ROOT)/macos_universal2
+endif
+
+# extract Gurobi version
+ifeq ($(UNAME_S),Linux)
+    GUROBI_VERSION := $(shell \
+        ls "$(libGUROBIBSCDIR)/lib" \
+        | grep -E '^libgurobi[0-9]+\.so$$' \
+        | sed -E 's/^libgurobi([0-9]+)\.so$$/\1/' \
+        | head -n1 \
+    )
+    ifeq ($(GUROBI_VERSION),)
+        $(error "No matching Gurobi library (libgurobi[digits].so found in $(libGUROBIBSCDIR)/lib!")
+    endif
+endif
+ifeq ($(UNAME_S),Darwin)
+    GUROBI_VERSION := $(shell \
+        ls "$(libGUROBIBSCDIR)/lib" \
+        | grep -E '^libgurobi[0-9]+\.dylib$$' \
+        | sed -E 's/^libgurobi([0-9]+)\.dylib$$/\1/' \
+        | head -n1 \
+    )
+    ifeq ($(GUROBI_VERSION),)
+        $(error "No matching Gurobi library (libgurobi[digits].dylib) found in $(libGUROBIBSCDIR)/lib!")
+    endif
+endif
+
+# macros to be exported - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+libGUROBILIB = -L"$(libGUROBIBSCDIR)/lib" -lgurobi$(GUROBI_VERSION) $(libGUROBIEXTLIB)
+libGUROBIINC = -I"$(libGUROBIBSCDIR)/include"
+
+############################# End of makefile ################################

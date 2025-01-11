@@ -1,0 +1,37 @@
+##############################################################################
+############################# makefile-libStOpt ##############################
+##############################################################################
+#                                                                            #
+#   makefile of libStOpt                                                     #
+#                                                                            #
+#   Input:  $(StOpt_ROOT), the directory where StOpt is installed            #
+#                                                                            #
+#   Output: accordingly, there is no *H and *OBJ in output, since there is   #
+#           no need to check for changes in the .h and rebuild the .o / .a   #
+#                                                                            #
+#           $(libStOptLIB) = external libraries + -L< libdirs > for libStOpt #
+#           $(libStOptINC) = the -I$(include directories) for libStOpt       #
+#                                                                            #
+#                              Antonio Frangioni                             #
+#                          Dipartimento di Informatica                       #
+#                              Universita' di Pisa                           #
+#                                                                            #
+##############################################################################
+
+# internal macros - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# basic StOpt directory without quotes, if any
+libStOptBSCDIR = $(subst $\",,$(StOpt_ROOT))
+
+# macros to be exported - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ifeq ($(UNAME_S),Linux)
+    libStOptLIB = -L"$(libStOptBSCDIR)/lib" -lStOpt -lgeners \
+	    -L"$(libStOptBSCDIR)/lib/x86_64-linux-gnu" -lboost_timer
+endif
+ifeq ($(UNAME_S),Darwin)
+    libStOptLIB = -L"$(libStOptBSCDIR)/lib" -lStOpt -lgeners -lboost_timer
+endif
+libStOptINC = -I"$(libStOptBSCDIR)" -I"$(libStOptBSCDIR)/geners-1.11.0"
+
+######################## End of makefile-libStOpt ############################

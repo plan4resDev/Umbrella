@@ -1,0 +1,36 @@
+##############################################################################
+############################## makefile-libSCIP ##############################
+##############################################################################
+#                                                                            #
+#   makefile of libSCIP                                                      #
+#                                                                            #
+#   Input:  SCIP_ROOT, the directory where SCIP is installed                 #
+#                                                                            #
+#   Output: accordingly, there is no *H and *OBJ in output, since there is   #
+#           no need to check for changes in the .h and rebuild the .o / .a   #
+#                                                                            #
+#           $(libSCIPLIB) = external libraries + -L< libdirs > for libSCIP   #
+#           $(libSCIPINC) = the -I$(include directories) for libSCIP         #
+#                                                                            #
+#                              Antonio Frangioni                             #
+#                          Dipartimento di Informatica                       #
+#                              Universita' di Pisa                           #
+#                                                                            #
+##############################################################################
+
+# internal macros - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# basic SCIP directory without quotes, if any
+libSCIPBSCDIR = $(subst $\",,$(SCIP_ROOT))
+
+# macros to be exported - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ifeq ($(UNAME_S),Linux)
+    libSCIPLIB = -L"$(libSCIPBSCDIR)/lib" -lscip -lzimpl -lsoplex -ltbb
+endif
+ifeq ($(UNAME_S),Darwin)
+    libSCIPLIB = -rpath "$(libSCIPBSCDIR)/lib" -L"$(libSCIPBSCDIR)/lib" -lscip -lzimpl -lsoplex -ltbb
+endif
+libSCIPINC = -I"$(libSCIPBSCDIR)/include"
+
+############################# End of makefile ################################
