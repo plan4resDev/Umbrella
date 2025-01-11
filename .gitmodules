@@ -43,3 +43,8 @@
 	path = MCFBlock
 	url = https://github.com/plan4resDev/MCFBlock
 	branch = master
+
+[submodule "MILPSolver"]
+	path = MILPSolver
+	url = https://github.com/plan4resDev/MILPSolver
+	branch = master
