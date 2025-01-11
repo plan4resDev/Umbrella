@@ -53,3 +53,8 @@
 	path = MMCFBlock
 	url = https://github.com/plan4resDev/MMCFBlock
 	branch = master
+
+[submodule "SDDPBlock"]
+	path = SDDPBlock
+	url = https://github.com/plan4resDev/SDDPBlock
+	branch = master
