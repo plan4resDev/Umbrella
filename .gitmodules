@@ -78,3 +78,8 @@
 	path = tests
 	url = https://github.com/plan4resDev/tests
 	branch = master
+
+[submodule "tools"]
+	path = tools
+	url = https://github.com/plan4resDev/tools
+	branch = master
