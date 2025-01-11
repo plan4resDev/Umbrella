@@ -33,3 +33,8 @@
 	path = LagrangianDualSolver
 	url = https://github.com/plan4resDev/LagrangianDualSolver
 	branch = master
+
+[submodule "LukFiBlock"]
+	path = LukFiBlock
+	url = https://github.com/plan4resDev/LukFiBlock
+	branch = master
