@@ -147,7 +147,7 @@ EOL
 			  export CPLEX_HOME="${CPLEX_ROOT}/cplex"
 			  export PATH="${PATH}:${CPLEX_HOME}/bin/x86-64_linux"
 			  export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${CPLEX_HOME}/lib/x86-64_linux"
-			  if [[ "$HAS_SUDO" -eq 1 && "$update_linux" -eq 1 ]] then
+			  if [[ "$HAS_SUDO" -eq 1 && "$update_linux" -eq 1 ]]; then
 				sh -c "echo '${CPLEX_HOME}/lib/x86-64_linux' > /etc/ld.so.conf.d/cplex.conf"
 				ldconfig
 			  else
@@ -220,6 +220,8 @@ EOL
 		if [ -f "$GUROBI_INSTALLER" ]; then
 			#if [ ! -d "$GUROBI_ROOT" ]; then mkdir $GUROBI_ROOT; fi
 			if [ -f "$gurobi_licence" ]; then
+												
+									 
 				cd $INSTALL_ROOT
 				tar xvf $GUROBI_INSTALLER
 				GRBDIR=$(tar tzf "$GUROBI_INSTALLER" | head -1 | cut -f1 -d"/")
@@ -556,8 +558,8 @@ esac
 if ! { [ -f /.dockerenv ] && [ "$CI" = "true" ]; }; then
   # Install SMSpp
   echo "Compiling SMSpp..."
-  SMSPP_URL=https://github.com/plan4resDev/Umbrella.git
-  smsbranch=plan4res
+  SMSPP_URL=https://gitlab.com/smspp/smspp-project.git
+  smsbranch=develop
   
   cd $BUILD_ROOT
   # Check if the SMSpp repository already exists
