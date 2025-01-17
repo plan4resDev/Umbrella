@@ -147,7 +147,7 @@ EOL
 			  export CPLEX_HOME="${CPLEX_ROOT}/cplex"
 			  export PATH="${PATH}:${CPLEX_HOME}/bin/x86-64_linux"
 			  export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${CPLEX_HOME}/lib/x86-64_linux"
-			  if [ "$HAS_SUDO" -eq 1 ]; then
+			  if [[ "$HAS_SUDO" -eq 1 && "$update_linux" -eq 1 ]] then
 				sh -c "echo '${CPLEX_HOME}/lib/x86-64_linux' > /etc/ld.so.conf.d/cplex.conf"
 				ldconfig
 			  else
@@ -218,13 +218,14 @@ EOL
 		  fi
       else
 		if [ -f "$GUROBI_INSTALLER" ]; then
-			if [ ! -d "$GUROBI_ROOT" ]; then mkdir $GUROBI_ROOT; fi
+			#if [ ! -d "$GUROBI_ROOT" ]; then mkdir $GUROBI_ROOT; fi
 			if [ -f "$gurobi_licence" ]; then
-				mv ${gurobi_licence} $GUROBI_ROOT/gurobi.lic
-				mv $GUROBI_INSTALLER $GUROBI_ROOT
-				cd $GUROBI_ROOT
+				cd $INSTALL_ROOT
 				tar xvf $GUROBI_INSTALLER
-				rm -rf $GUROBI_ROOT/$GUROBI_INSTALLER
+				GRBDIR=$(tar tzf "$GUROBI_INSTALLER" | head -1 | cut -f1 -d"/")
+				echo "gurdir: $GRBDIR"
+				mv ./$GRBDIR "$GUROBI_ROOT"
+				rm -rf $INSTALL_ROOT/$GUROBI_INSTALLER
 			else
 				echo "Gurobi licence does not exist"
 				exit 1
@@ -240,7 +241,7 @@ EOL
   fi
 
   # Install SCIP
-  echo "Installing SCIP...  install_scip=$install_scip"
+  echo "Installing SCIP...  "
   SCIP_ROOT="${INSTALL_ROOT}/scip"
   SCIP_BUILD_ROOT="${BUILD_ROOT}/scip"
   if [ "$install_scip" -eq 1 ]; then
@@ -262,7 +263,7 @@ EOL
 	#delete_dirs applications build check cmake doc examples make pclint scripts src tests
 	#delete_files CHANGELOG CMakeLists.txt INSTALL_APPLICATIONS_EXAMPLES.md INSTALL.md Makefile README.md scip-config.cmake.in
     #rm -rf $SCIP_BUILD_ROOT
-    if [ "$HAS_SUDO" -eq 1 ]; then
+    if [[ "$HAS_SUDO" -eq 1 && "$update_linux" -eq 1 ]]; then
       sh -c "echo '${SCIP_ROOT}/lib' > /etc/ld.so.conf.d/scip.conf"
       ldconfig
     fi
@@ -286,7 +287,7 @@ EOL
     cmake --build build
     cmake --install build --prefix "$HiGHS_ROOT"
 	#rm -rf $HiGHS_BUILD_ROOT
-    if [ "$HAS_SUDO" -eq 1 ]; then
+    if [[ "$HAS_SUDO" -eq 1 && "$update_linux" -eq 1 ]]; then
       sh -c "echo '${HiGHS_ROOT}/lib' > /etc/ld.so.conf.d/highs.conf"
       ldconfig
     fi	
@@ -338,7 +339,7 @@ EOL
     ./coinbrew build Clp --latest-release --skip-dependencies --prefix="$CoinOr_ROOT" --tests=none
     rm -Rf coinbrew build CoinUtils Osi Clp
     export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${CoinOr_ROOT}/lib"
-    if [ "$HAS_SUDO" -eq 1 ]; then
+    if [[ "$HAS_SUDO" -eq 1 && "$update_linux" -eq 1 ]]; then
       sh -c "echo '${CoinOr_ROOT}/lib' > /etc/ld.so.conf.d/coin-or.conf"
       ldconfig
     fi
@@ -350,7 +351,7 @@ EOL
   # Install StOpt
   echo "Installing StOpt..."
   StOpt_ROOT="${INSTALL_ROOT}/StOpt"
-  if [ "$HAS_SUDO" -eq 1 and "$update_linux" -eq 1 ]; then
+  if [[ "$HAS_SUDO" -eq 1 && "$update_linux" -eq 1 ]]; then
     apt-get install -y -q zlib1g-dev
   fi
   if [ "$install_stopt" -eq 1 ]; then
