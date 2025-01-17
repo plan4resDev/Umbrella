@@ -273,10 +273,10 @@ EOL
   fi
 
   # Install HiGHS
-  echo "Installing HiGHS......  install_highs=$install_highs"
   HiGHS_ROOT="${INSTALL_ROOT}/HiGHS"
   HiGHS_BUILD_ROOT="${BUILD_ROOT}/HiGHS"
   if [ "$install_highs" -eq 1 ] && [ ! -d $HiGHS_ROOT ]; then
+    echo "Installing HiGHS...... "
     cd "$BUILD_ROOT"
 	if [ ! -d ${BUILD_ROOT}/HiGHS ]; then
 		git clone https://github.com/ERGO-Code/HiGHS.git
@@ -351,12 +351,12 @@ EOL
   fi
 
   # Install StOpt
-  echo "Installing StOpt..."
   StOpt_ROOT="${INSTALL_ROOT}/StOpt"
   if [[ "$HAS_SUDO" -eq 1 && "$update_linux" -eq 1 ]]; then
     apt-get install -y -q zlib1g-dev
   fi
   if [ "$install_stopt" -eq 1 ] && [ ! -d $StOpt_ROOT ]; then
+    echo "Installing StOpt..."
     if [ -d $BUILD_ROOT/StOpt ]; then rm -rf $BUILD_ROOT/StOpt ; fi
     git clone https://gitlab.com/stochastic-control/StOpt.git $BUILD_ROOT/StOpt
     cd $BUILD_ROOT/StOpt
