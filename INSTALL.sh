@@ -328,9 +328,10 @@ EOL
     if [ "$install_gurobi" -eq 0 ]; then
       osi_build_flags+=("--without-gurobi")
     else
+      gurobiflag=$(echo $gurobi_installer | sed -E 's/gurobi([0-9]+)\.([0-9]+)\..*/lgurobi\1\2/')
       osi_build_flags+=(
         "--with-gurobi"
-        "--with-gurobi-lib=-L${GUROBI_ROOT}/linux64/lib -lgurobi100"
+        "--with-gurobi-lib=-L${GUROBI_ROOT}/linux64/lib -${gurobiflag}"
         "--with-gurobi-incdir=${GUROBI_ROOT}/linux64/include"
       )
     fi
