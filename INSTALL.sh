@@ -112,10 +112,11 @@ install_on_linux() {
   fi
 
   # Install CPLEX
-  if [ "$install_cplex" -eq 1 ]; then
+  CPLEX_ROOT="${INSTALL_ROOT}/cplex"
+  if [ "$install_cplex" -eq 1 ] && [ ! -d $CPLEX_ROOT ]; then
     echo "Installing CPLEX..."
 	#CPLEX_ROOT="${INSTALL_ROOT}/ibm/ILOG/CPLEX_Studio"
-    CPLEX_ROOT="${INSTALL_ROOT}/cplex"
+    
     if [ ! -d "$CPLEX_ROOT" ]; then  # this test doesn't work if the install has started but failed
       cd "$INSTALL_ROOT"
 	  if [ ! "$cplex_installer" = "" ]; then
@@ -244,7 +245,7 @@ EOL
   echo "Installing SCIP...  "
   SCIP_ROOT="${INSTALL_ROOT}/scip"
   SCIP_BUILD_ROOT="${BUILD_ROOT}/scip"
-  if [ "$install_scip" -eq 1 ]; then
+  if [ "$install_scip" -eq 1 ] &&  [ ! -d $SCIP_ROOT ]; then
     if [[ "$HAS_SUDO" -eq 1 && "$update_linux" -eq 1 ]]; then
       apt-get install -y -q gfortran libtbb-dev
     fi
@@ -275,7 +276,7 @@ EOL
   echo "Installing HiGHS......  install_highs=$install_highs"
   HiGHS_ROOT="${INSTALL_ROOT}/HiGHS"
   HiGHS_BUILD_ROOT="${BUILD_ROOT}/HiGHS"
-  if [ "$install_highs" -eq 1 ]; then
+  if [ "$install_highs" -eq 1 ] && [ ! -d $HiGHS_ROOT ]; then
     cd "$BUILD_ROOT"
 	if [ ! -d ${BUILD_ROOT}/HiGHS ]; then
 		git clone https://github.com/ERGO-Code/HiGHS.git
@@ -302,7 +303,7 @@ EOL
   fi
   CoinOr_ROOT="${INSTALL_ROOT}/coin-or"
   CoinOr_BUILD_ROOT="${BUILD_ROOT}/coin-or"
-  if [ "$install_coin" -eq 1 ]; then
+  if [ "$install_coin" -eq 1 ] && [ ! -d $CoinOr_ROOT ] ; then
     cd "$BUILD_ROOT"
     curl -O https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
     chmod u+x coinbrew
@@ -355,9 +356,9 @@ EOL
   if [[ "$HAS_SUDO" -eq 1 && "$update_linux" -eq 1 ]]; then
     apt-get install -y -q zlib1g-dev
   fi
-  if [ "$install_stopt" -eq 1 ]; then
+  if [ "$install_stopt" -eq 1 ] && [ ! -d $StOpt_ROOT ]; then
     if [ -d $BUILD_ROOT/StOpt ]; then rm -rf $BUILD_ROOT/StOpt ; fi
-    git clone https://gitlab.com/stochastic-control/StOpt.git $BUILD_ROOT
+    git clone https://gitlab.com/stochastic-control/StOpt.git $BUILD_ROOT/StOpt
     cd $BUILD_ROOT/StOpt
     delete_dirs doc 
     cmake -S . -B build \
